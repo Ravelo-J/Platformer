@@ -1,0 +1,17 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+body {
+    background-color: rgb(20, 20, 20);
+    text-align: center;
+}
+
+canvas {
+    background-color: rgba(128, 128, 128, 0.75);
+    width: 99vw;
+    height: 99vh;
+}
+div {
+    color: rgb(17, 39, 22);
+}
