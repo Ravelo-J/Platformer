@@ -99,7 +99,7 @@ function Controller(model, view) {
 
         //Left (of Platform)
         if (this.platformCollision.horizontal == "left") {
-            console.log("LEFT")
+            //console.log("LEFT")
             this.model.player.velocityX = 0
             this.model.player.x = this.platformCollision.hPlatform.x-this.model.player.size
             this.platformCollision.hPlatform = null
@@ -136,7 +136,7 @@ function Controller(model, view) {
         });
         //Top, prevents falling
         if (this.platformCollision.vertical == "top") {
-            console.log("TOP")
+            //console.log("TOP")
             this.model.player.velocityY = 0
             this.model.player.y = this.platformCollision.vPlatform.y+this.platformCollision.vPlatform.height
             this.platformCollision.vPlatform = null

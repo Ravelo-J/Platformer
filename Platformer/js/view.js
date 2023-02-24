@@ -2,12 +2,12 @@
 function View() {
     this.canvas = document.getElementById("canvas")
     this.ctx = canvas.getContext("2d")
-    this.img1 = new Image()
-    this.img1.src = "../sprites/grass.png"
-    this.img2 = new Image()
-    this.img2.src = "../sprites/dirt.png"
-    this.img3 = new Image()
-    this.img3.src = "../sprites/background.png"
+    //this.img1 = new Image()
+    //this.img1.src = "../sprites/grass.png"
+    //this.img2 = new Image()
+    //this.img2.src = "../sprites/dirt.png"
+    //this.img3 = new Image()
+    //this.img3.src = "../sprites/background.png"
 
     this.renderWorld = function(height,width) {
         this.canvas.height = height
