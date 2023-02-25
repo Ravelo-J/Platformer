@@ -1,4 +1,4 @@
-function Controller(model, view,engine) {
+function Controller(model, view) {
     //Connections
     this.model = model
     this.view = view
@@ -71,7 +71,7 @@ function Controller(model, view,engine) {
                 break
             case " ":
                 this.keys.space.active = bool
-                break
+                break                
         }
     }
     this.addPlayerControls = function() {
@@ -90,7 +90,6 @@ function Controller(model, view,engine) {
             if (this.model.player.velocityX >= this.model.player.maxSpeed) {
                 this.model.player.velocityX = this.model.player.maxSpeed
             } 
-            this.sideScroll("right",this.model.player)
         //backward
         } else if (this.keys.a.active) {
             this.model.player.velocityX -= this.model.world.friction
@@ -98,7 +97,6 @@ function Controller(model, view,engine) {
             if (this.model.player.velocityX <= -this.model.player.maxSpeed) {
                 this.model.player.velocityX = -this.model.player.maxSpeed
             }
-            this.sideScroll("left",this.model.player)
         //stopping/slowing down
         } else {
             if (this.model.player.velocityX > 0) {
@@ -122,6 +120,7 @@ function Controller(model, view,engine) {
         this.model.platforms.forEach(platform => {
             this.collisionDetection(platform,this.model.player)
         });
+        //this.sideScroll("h",this.model.player)
         this.model.player.x += this.model.player.velocityX
         
     }
@@ -130,14 +129,17 @@ function Controller(model, view,engine) {
         if (this.keys.space.active && this.model.player.velocityY == 0 && this.model.player.grounded ) {
             this.model.player.velocityY += this.model.player.jumpStrength
             this.model.player.grounded = false
-        //Fall until ground level 0
+        //Fall
         } else {
             this.model.player.velocityY -= this.model.world.gravity
-            if (this.model.player.y <= 0) {
+            if (this.model.player.y < 0) {
+                this.model.player.alive = false
+            }
+            /*if (this.model.player.y <= 0) {
                 this.model.player.y = 0
                 this.model.player.velocityY = 0
                 this.model.player.grounded = true
-            }
+            }*/
         }
         /*check for collision
             Check bottom and top collisions, update vertical player movement as per usual if none are detected
@@ -145,9 +147,12 @@ function Controller(model, view,engine) {
             Collision detections are registered relative to object player collided with.
             i.e. top means player fell on the top side of platform
         */
+        
         this.model.platforms.forEach(platform => {
             this.collisionDetection(platform,this.model.player)
-        });
+        })
+        //this.sideScroll("v",this.model.player)
+        //this.sideScroll("down",this.model.player)
         this.model.player.y += this.model.player.velocityY
         
     }
@@ -199,28 +204,40 @@ function Controller(model, view,engine) {
             this.platformCollision.vertical = null
         }
     }
+    /*
     this.sideScroll = function(direction,target) {
-        switch (direction) {
-            case "right":
+            if (direction=="h") {
                 //SideScroll right within distance form border
-                if (this.model.world.width-target.x < 500) {
-                    target.x -= target.maxSpeed
+                if (target.x > this.model.world.width/2-target.size*2) {
+                    target.x -= target.velocityX
                     this.model.platforms.forEach(platform => {
-                        platform.x -= target.maxSpeed
+                        platform.x -= target.velocityX
                     })
                 }
-                break
-            case "left":
                 //SideScroll left within distance form border
-                if (target.x < 500-target.size) {
-                    target.x += target.maxSpeed
+                else if (target.x < this.model.world.width/2-target.size*2) {
+                    target.x -= target.velocityX
                     this.model.platforms.forEach(platform => {
-                        platform.x += target.maxSpeed
+                        platform.x -= target.velocityX
+                    })
+                }}
+            if (direction =="v") {
+                //scroll up
+                if (target.y > this.model.world.height/2-target.size) {
+                    target.y -=target.velocityY
+                    this.model.platforms.forEach(platform => {
+                        platform.y -=target.velocityY
                     })
                 }
-                break
-        }
-    }
+                //scroll down
+                else if (target.y < this.model.world.height/2-target.size) {
+                        target.y +=target.velocityY
+                        this.model.platforms.forEach(platform => {
+                            platform.y +=target.velocityY
+                        })
+                    
+                }}   
+    }*/
 }
 //NEED WINNING CONDITION
 
@@ -231,4 +248,6 @@ function Controller(model, view,engine) {
 //NEED TO ADD VERTICAL AUTO-SCROLLING
 
 //NEED TO REMOVE Y=0 AS PERMANENT GROUND for falling
+    //No longer invisible floor across bottom of map
 
+//Remove SideScrolling???

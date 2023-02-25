@@ -18,11 +18,11 @@ function View() {
         this.canvas = document.getElementById("canvas")
         this.ctx = this.canvas.getContext("2d")
     }
-    this.renderBackground = function() {
+    this.renderBackground = function(height,width) {
         //this.ctx.drawImage(this.img3,0,0,1000,500)
         this.ctx.beginPath()
         this.ctx.fillStyle = "rgba(100, 50, 100, 1.0)"
-        this.ctx.rect(0,0,1000,500)
+        this.ctx.rect(0,0,width,height)
         this.ctx.fill()
     }
     this.renderPlayer = function(size,x,y,color) {

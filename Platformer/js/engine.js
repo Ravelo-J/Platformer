@@ -10,11 +10,7 @@ function Engine(model,view,controller) {
 
     this.gameLoop = function() {
          //breaks gameloop (test): stops recursion from setTimeout
-        if (this.stop) {
-            this.sysClock = null
-            return
-        }
-        this.view.renderBackground()
+        this.view.renderBackground(this.model.world.height,this.model.world.width)
         this.model.platforms.forEach((platform) => {
             this.view.renderPlatforms(platform.x,this.model.world.height-platform.height-platform.y,platform.width,platform.height,platform.color)
         })

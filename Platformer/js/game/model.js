@@ -1,7 +1,7 @@
 function Model(platformJSON) {
     this.world = {
-        height: 500,
-        width: 1000,
+        height: 1000,
+        width: 2000,
 
         friction: 5, //acceleration Horizontal
         gravity: 5, //acc vert
@@ -71,9 +71,9 @@ function Model(platformJSON) {
         },
         {
             x: 700,
-            y: 250,
+            y: 200,
             width: 50,
-            height: 50,
+            height: 100,
             color: "rgb(39, 29, 17)",
         },
         {
@@ -93,7 +93,7 @@ function Model(platformJSON) {
         {
             x: 0,
             y: 450,
-            width: 1500,
+            width: 900,
             height: 50,
             color: "rgb(39, 29, 17)",
         }, /**/
