@@ -1,7 +1,7 @@
 
 function View() {
-    this.canvas = document.getElementById("canvas")
-    this.ctx = canvas.getContext("2d")
+    this.canvas;
+    this.ctx;
     //this.img1 = new Image()
     //this.img1.src = "../sprites/grass.png"
     //this.img2 = new Image()
@@ -10,8 +10,13 @@ function View() {
     //this.img3.src = "../sprites/background.png"
 
     this.renderWorld = function(height,width) {
-        this.canvas.height = height
-        this.canvas.width = width
+        let newCanvas = document.createElement("canvas")
+        newCanvas.height = height
+        newCanvas.width = width
+        newCanvas.id = "canvas"
+        document.body.insertBefore(newCanvas,document.getElementById("menu_container"))
+        this.canvas = document.getElementById("canvas")
+        this.ctx = this.canvas.getContext("2d")
     }
     this.renderBackground = function() {
         //this.ctx.drawImage(this.img3,0,0,1000,500)
@@ -63,4 +68,39 @@ function View() {
         this.ctx.drawImage(this.img1,50,400)
         this.ctx.drawImage(this.img2,50,450)
     } */
+    this.displayMainMenu = function() {
+        const menuContainer = document.getElementById("menu_container")
+        menuContainer.style.width = "100vw"
+        menuContainer.style.height = "100vh"
+
+        const title = document.createElement("h1");
+        title.innerHTML = "Platformer Gamer";
+        title.id = "titleHeading"
+        menuContainer.appendChild(title);
+
+        const buttonContainer = document.createElement("div");
+        buttonContainer.id = "menu_button_container"
+        menuContainer.appendChild(buttonContainer);
+
+        const btn = document.createElement("button");
+        btn.innerHTML = "Play";
+        btn.id = "startButton"
+        btn.setAttribute("class", "menu_button")
+        document.getElementById("menu_button_container").appendChild(btn);
+
+        const btn2 = document.createElement("button");
+        btn2.innerHTML = "World Editor";
+        btn2.id = "worldEditButton"
+        btn2.setAttribute("class", "menu_button")
+        document.getElementById("menu_button_container").appendChild(btn2);
+    }
+    this.destroyMainMenu = function() {
+        const menuContainer = document.getElementById("menu_container")
+        menuContainer.style.width = "0"
+        menuContainer.style.height = "0"
+        document.getElementById("titleHeading").remove()
+        document.getElementById("startButton").remove()
+        document.getElementById("worldEditButton").remove()
+        document.getElementById("menu_button_container").remove()
+    }
 }

@@ -96,6 +96,6 @@ function Model(platformJSON) {
             width: 1500,
             height: 50,
             color: "rgb(39, 29, 17)",
-        }, 
+        }, /**/
     ]
 }
