@@ -10,7 +10,7 @@ function Model(platformJSON) {
         color: "darkred",
         size: 50,
 
-        x:500,
+        x:0,
         y:50,
         velocityX:0,
         velocityY:0,
@@ -19,83 +19,32 @@ function Model(platformJSON) {
 
         grounded: false,
     }
+    //[50x,50y] so [10,10] = [500,500], 0<=x<40 0<=y<20
+    this.platformLocationCodes = [[2,2],[3,3],[4,3],[5,3],[6,3],[10,10],[5,5],[15,15],[16,16],[17,17]]
     this.platforms = [
+        //left wall
         {
-            x: -500,
+            x: -50,
             y: 0,
-            width: 500,
-            height: 500,
+            width: 50,
+            height: this.world.height,
             color: "rgb(17, 39, 22)",
         },
+        //right wall
         {
-            x: 100,
+            x: this.world.width,
             y: 0,
             width: 50,
-            height: 50,
-            color: "rgb(39, 29, 17)",
+            height: this.world.height,
+            color: "rgb(17, 39, 22)",
         },
-        {
-            x: 250,
-            y: 0,
-            width: 50,
-            height: 100,
-            color: "rgb(39, 29, 17)",
-        },
-        {
-            x: 400,
-            y: 0,
-            width: 50,
-            height: 150,
-            color: "rgb(39, 29, 17)",
-        },
-        {
-            x: 550,
-            y: 200,
-            width: 100,
-            height: 50,
-            color: "rgb(39, 29, 17)",
-        },
-        {
-            x: 500,
-            y: 0,
-            width: 200,
-            height: 50,
-            color: "rgb(39, 29, 17)",
-        },
-        {
-            x: 700,
-            y: 0,
-            width: 500,
-            height: 100,
-            color: "rgb(39, 29, 17)",
-        },
-        {
-            x: 700,
-            y: 200,
-            width: 50,
-            height: 100,
-            color: "rgb(39, 29, 17)",
-        },
-        {
-            x: 850,
-            y: 300,
-            width: 50,
-            height: 50,
-            color: "rgb(39, 29, 17)",
-        },
-        {
-            x: 1000,
-            y: 350,
-            width: 50,
-            height: 50,
-            color: "rgb(39, 29, 17)",
-        },
+        //row 1
         {
             x: 0,
-            y: 450,
-            width: 900,
+            y: 0,
+            width: 50,
             height: 50,
-            color: "rgb(39, 29, 17)",
-        }, /**/
+            color: "rgb(17, 39, 22)",
+        },
     ]
 }

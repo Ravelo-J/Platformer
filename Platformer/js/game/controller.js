@@ -132,9 +132,6 @@ function Controller(model, view) {
         //Fall
         } else {
             this.model.player.velocityY -= this.model.world.gravity
-            if (this.model.player.y < 0) {
-                this.model.player.alive = false
-            }
             /*if (this.model.player.y <= 0) {
                 this.model.player.y = 0
                 this.model.player.velocityY = 0
@@ -190,7 +187,7 @@ function Controller(model, view) {
             target.y = this.platformCollision.vPlatform.y+this.platformCollision.vPlatform.height
             this.platformCollision.vPlatform = null
             this.platformCollision.vertical = null
-            target.grounded = true
+            setTimeout(() => {target.grounded = true},10) 
         }
         //Y Bottom
         else if (target.y+target.size <= platform.y && target.y + target.size +target.velocityY > platform.y &&

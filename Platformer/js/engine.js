@@ -28,6 +28,17 @@ function Engine(model,view,controller) {
         this.view.displayMainMenu()
         this.controller.activateMenuButtons()
     }
+    this.generatePlatforms = function(plc = this.model.platformLocationCodes) {
+        plc.forEach((item)=> {
+            this.model.platforms.push({
+                x: 50*item[0]-50,
+                y: 50*item[1]-50,
+                width: 50,
+                height: 50,
+                color: "rgb(17, 39, 22)",
+            })
+        })
+    }
 }
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -37,6 +48,6 @@ window.addEventListener("DOMContentLoaded", () => {
     let engine = new Engine(model,view,controller)
     controller.engine = engine
     //view.renderPlatformImg()
-
+    engine.generatePlatforms(model.platformLocationCodes)
     engine.mainMenu()
 })
