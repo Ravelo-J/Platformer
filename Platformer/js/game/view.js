@@ -9,6 +9,7 @@ function View() {
     //this.img3 = new Image()
     //this.img3.src = "../sprites/background.png"
 
+    //Render Game
     this.renderWorld = function(height,width) {
         let newCanvas = document.createElement("canvas")
         newCanvas.height = height
@@ -17,6 +18,10 @@ function View() {
         document.body.insertBefore(newCanvas,document.getElementById("menu_container"))
         this.canvas = document.getElementById("canvas")
         this.ctx = this.canvas.getContext("2d")
+    }
+    this.deRenderWorld = function() {
+        this.canvas.remove()
+        this.canvas = null
     }
     this.renderBackground = function(height,width) {
         //this.ctx.drawImage(this.img3,0,0,1000,500)
@@ -68,6 +73,8 @@ function View() {
         this.ctx.drawImage(this.img1,50,400)
         this.ctx.drawImage(this.img2,50,450)
     } */
+
+    //MainMenu
     this.displayMainMenu = function() {
         const menuContainer = document.getElementById("menu_container")
         menuContainer.style.width = "100vw"
@@ -102,5 +109,48 @@ function View() {
         document.getElementById("startButton").remove()
         document.getElementById("worldEditButton").remove()
         document.getElementById("menu_button_container").remove()
+    }
+
+    //In-game menu
+    this.displayIngameMenu = function() {
+        console.log(3.1)
+        const menuContainer = document.getElementById("menu_container")
+        menuContainer.style.width = "100vw"
+        menuContainer.style.height = "100vh"
+        menuContainer.style.position = "fixed"
+        menuContainer.style.top = "0"
+        menuContainer.style.left = "0"
+
+        const title = document.createElement("h1");
+        title.innerHTML = "Not Paused";
+        title.id = "titleHeading"
+        menuContainer.appendChild(title);
+
+        const buttonContainer = document.createElement("div");
+        buttonContainer.id = "ingame_menu_button_container"
+        menuContainer.appendChild(buttonContainer);
+
+        const btn = document.createElement("button");
+        btn.innerHTML = "Restart";
+        btn.id = "restartButton"
+        btn.setAttribute("class", "ingame_menu_button")
+        document.getElementById("ingame_menu_button_container").appendChild(btn);
+
+        const btn2 = document.createElement("button");
+        btn2.innerHTML = "Main Menu";
+        btn2.id = "mainMenuButton"
+        btn2.setAttribute("class", "ingame_menu_button")
+        document.getElementById("ingame_menu_button_container").appendChild(btn2);
+    }
+    this.destroyIngameMenu = function() {
+        console.log(3.2)
+        const menuContainer = document.getElementById("menu_container")
+        menuContainer.style.width = "0"
+        menuContainer.style.height = "0"
+        menuContainer.style.position = "static"
+        document.getElementById("titleHeading").remove()
+        document.getElementById("restartButton").remove()
+        document.getElementById("mainMenuButton").remove()
+        document.getElementById("ingame_menu_button_container").remove()
     }
 }

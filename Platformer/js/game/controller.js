@@ -3,33 +3,80 @@ function Controller(model, view) {
     this.model = model
     this.view = view
     this.engine;
-    //Main_menu items/functions
-    this.startButton;
-    this.worldEditorButton;
+
+    /*Main_menu items/functions AND MacroControls*/
+        //Events
     this.activateMenuButtons = function() {
-        this.startButton = document.getElementById("startButton").addEventListener("click", () => {
-            this.startGame()
-            this.deactivateMenuButtons()
-        })
-        this.worldEditorButton = document.getElementById("worldEditButton").addEventListener("click", () => { 
-            this.startWorldEditor()
-        })
+        document.getElementById("startButton").addEventListener("click",this.startGame)
+        document.getElementById("worldEditButton").addEventListener("click",this.startWorldEditor)
     }
     this.deactivateMenuButtons = function() {
-        this.startButton = null;
-        this.worldEditorButton = null;
+        document.getElementById("startButton").removeEventListener("click",this.startGame)
+        document.getElementById("worldEditButton").removeEventListener("click",this.startWorldEditor)
+        
     }
+        //Event Handlers
     this.startGame = function() {
-        this.view.destroyMainMenu()
-
-        this.view.renderWorld(this.model.world.height,this.model.world.width)
-        this.addPlayerControls()
-        this.engine.gameLoop()
-    }
+            this.deactivateMenuButtons()
+            this.view.destroyMainMenu()
+            this.engine.preGameLoop()
+    }.bind(this)
     this.startWorldEditor = function() {
-        this.view.destroyMainMenu()
+        () => {
+            this.deactivateMenuButtons()
+            this.view.destroyMainMenu()
+            //this.engine.preWorldEditLoop()
+        }
+    }.bind(this)
+
+    /*IN GAME MENU*/
+    this.restarting = false
+    this.paused = false
+        //Events
+    this.activateGameMenuButtons = function() {
+        document.getElementById("restartButton").addEventListener("click",this.restartGame)
+        document.getElementById("mainMenuButton").addEventListener("click",this.exitToMainMenu)        
     }
-    //Controller data
+    this.deactivateGameMenuButtons = function() {
+        document.getElementById("restartButton").removeEventListener("click",this.restartGame)
+        document.getElementById("mainMenuButton").removeEventListener("click",this.exitToMainMenu)   
+    }
+        //Event Handlers
+    this.restartGame = function() {
+        if (!this.restarting) {
+            if (this.paused) {
+                this.manageIngameMenu()
+            }
+            this.removePlayerControls()
+            this.view.deRenderWorld()
+            this.engine.preGameLoop()
+            this.restarting = true;
+            setTimeout(()=>{this.restarting = false},10) 
+        }
+    }.bind(this)  //maintains scope of this when called by event from button (without, this would refer to button)
+    this.exitToMainMenu = function() {
+        this.manageIngameMenu()
+        this.view.deRenderWorld()
+        this.removePlayerControls()
+        this.engine.mainMenu()
+    }.bind(this)
+        //Conditional for event toggle
+    this.manageIngameMenu = function() {
+        console.log(2)
+        if (!this.paused) {
+            this.paused = true
+            //must make ID before you can add event listeners to it
+            this.view.displayIngameMenu()
+            this.activateGameMenuButtons()
+        } else {
+            //must remove event listeners before ID is destroyed
+            this.deactivateGameMenuButtons()
+            this.view.destroyIngameMenu()
+            this.paused = false
+        }
+    }
+
+    /*Controller data/In-game Controls*/
     this.keys = {
         w: {
             active: false
@@ -46,6 +93,12 @@ function Controller(model, view) {
         space: {
             active: false
         },
+        r: {
+            active: false
+        },
+        escape: {
+            active: false
+        },
     }
     this.platformCollision = {
         hPlatform: null,
@@ -53,9 +106,24 @@ function Controller(model, view) {
         horizontal: null,
         vertical: null,
     }
-    this.keyDown;
-    this.keyUp;
-    this.keyHandler = function(e, bool) {
+        //Events
+    this.addPlayerControls = function() {
+        document.addEventListener("keydown",this.keyDown)
+        document.addEventListener("keyup",this.keyUp)
+    }
+    this.removePlayerControls = function() {
+        document.removeEventListener("keydown",this.keyDown)
+        document.removeEventListener("keyup",this.keyUp)
+    }
+        //Event Handlers
+    this.keyDown = function(e) {
+        this.keyHandler(e,true)
+    }.bind(this)
+    this.keyUp = function(e) {
+        this.keyHandler(e,false)
+    }.bind(this)
+        //Both handlers funnel into master handler
+    this.keyHandler = function(e,bool) {
         switch (e.key) {
             case "w":
                 this.keys.w.active = bool
@@ -71,16 +139,27 @@ function Controller(model, view) {
                 break
             case " ":
                 this.keys.space.active = bool
-                break                
+                break     
+            case "r":
+                this.keys.r.active = bool
+                break
+            case "Escape":
+                this.keys.escape.active = bool
+                break  
         }
     }
-    this.addPlayerControls = function() {
-        this.keyDown = document.addEventListener("keydown", (e) => {
-            this.keyHandler(e, true)
-        })
-        this.keyUp = document.addEventListener("keyup", (e) => {
-            this.keyHandler(e, false)
-        })
+
+    //Check Escape and R buttons (Non-Player Movement)
+    this.checkAlternateControls = function() {
+        if (this.keys.r.active) {
+            this.restartGame()
+            this.keys.r.active = false
+        } else if (this.keys.escape.active) {
+            console.log(1)
+                this.manageIngameMenu()
+                this.keys.escape.active = false
+        }
+        
     }
     this.movePlayer = function() {
         //Forward
